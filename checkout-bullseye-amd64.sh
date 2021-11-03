@@ -3,7 +3,7 @@
 set -e
 
 rm -rf docker-debian-artifacts
-git clone --depth 1 --branch dist-amd64 --filter=blob:none --sparse git@github.com:jgowdy/docker-debian-artifacts.git
+git clone --depth 1 --branch dist-amd64 --filter=blob:none --sparse https://github.com/jgowdy/docker-debian-artifacts.git
 cd docker-debian-artifacts
 git sparse-checkout init --cone
 git sparse-checkout set bullseye
