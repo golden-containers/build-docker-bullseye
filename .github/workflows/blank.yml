@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  schedule:
+    - cron: '0 15 * * *'
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  bullseye-amd64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout bullseye-amd64
+      run: checkout-bullseye-amd64.sh
+    - name: Build the Docker image
+      run: docker build docker-debian-artifacts/bullseye --file docker-debian-artifacts/Dockerfile --tag ghcr.io/jgowdy/jgowdy-bullseye:latest
+    - name: Log in to registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - name: Publish the Docker image
+      run: docker push ghcr.io/jgowdy/jgowdy-bullseye:latest
+      
