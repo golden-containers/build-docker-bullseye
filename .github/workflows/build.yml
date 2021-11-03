@@ -12,6 +12,7 @@ jobs:
   bullseye-amd64:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: Checkout bullseye-amd64
       run: checkout-bullseye-amd64.sh
     - name: Build the Docker image
