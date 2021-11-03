@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Checkout bullseye-amd64
-      run: checkout-bullseye-amd64.sh
+      run: ./checkout-bullseye-amd64.sh
     - name: Build the Docker image
       run: docker build docker-debian-artifacts/bullseye --file docker-debian-artifacts/Dockerfile --tag ghcr.io/jgowdy/jgowdy-bullseye:latest
     - name: Log in to registry
