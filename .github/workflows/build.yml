@@ -16,9 +16,9 @@ jobs:
     - name: Checkout bullseye-amd64
       run: ./checkout-bullseye-amd64.sh
     - name: Build the Docker image
-      run: docker build bullseye --tag ghcr.io/jgowdy/bullseye:latest
+      run: docker build docker-debian-artifacts/bullseye --tag ghcr.io/jgowdy/bullseye:latest
     - name: Build the Docker image
-      run: docker build bullseye/slim --tag ghcr.io/jgowdy/bullseye-slim:latest
+      run: docker build docker-debian-artifacts/bullseye/slim --tag ghcr.io/jgowdy/bullseye-slim:latest
     - name: Log in to registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Publish the Docker image
@@ -26,6 +26,6 @@ jobs:
     - name: Publish the Docker image
       run: docker push ghcr.io/jgowdy/bullseye-slim:latest
     - name: Build the Docker image
-      run: docker build bullseye/backports --tag ghcr.io/jgowdy/bullseye-backports:latest
+      run: docker build docker-debian-artifacts/bullseye/backports --tag ghcr.io/jgowdy/bullseye-backports:latest
     - name: Publish the Docker image
       run: docker push ghcr.io/jgowdy/bullseye-backports:latest
