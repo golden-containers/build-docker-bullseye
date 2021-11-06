@@ -10,3 +10,5 @@ git sparse-checkout set bullseye
 
 sed -i -e "1 s/FROM.*/FROM ghcr.io\/jgowdy\/bullseye/; t" -e "1,// s//ghcr.io\/jgowdy\/bullseye/" bullseye/backports/Dockerfile
 
+pwd
+find .
