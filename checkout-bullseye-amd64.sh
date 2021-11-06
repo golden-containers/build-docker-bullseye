@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -xe
 
 rm -rf docker-debian-artifacts
 git clone --depth 1 --branch dist-amd64 --filter=blob:none --sparse https://github.com/debuerreotype/docker-debian-artifacts
