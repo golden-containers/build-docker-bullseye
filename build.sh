@@ -26,7 +26,7 @@ docker build bullseye/backports --tag ghcr.io/golden-containers/debian:bullseye-
 
 # Push
 
-docker push debian
+docker push -a
 # ghcr.io/golden-containers/bullseye:latest
 
 #docker push ghcr.io/golden-containers/bullseye-slim:latest
