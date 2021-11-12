@@ -21,11 +21,11 @@ ${GNU_SED} -i -e "1 s/FROM.*/FROM ghcr.io\/golden-containers\/debian\:bullseye/;
 
 # Build
 
-docker build bullseye/ --tag ghcr.io/golden-containers/debian:bullseye --label ${1:-DEBUG=TRUE}
+docker build bullseye/ --platform linux/amd64 --tag ghcr.io/golden-containers/debian:bullseye --label ${1:-DEBUG=TRUE}
 
-docker build bullseye/slim/ --tag ghcr.io/golden-containers/debian:bullseye-slim --label ${1:-DEBUG=TRUE}
+docker build bullseye/slim/ --platform linux/amd64 --tag ghcr.io/golden-containers/debian:bullseye-slim --label ${1:-DEBUG=TRUE}
 
-docker build bullseye/backports/ --tag ghcr.io/golden-containers/debian:bullseye-backports --label ${1:-DEBUG=TRUE}
+docker build bullseye/backports/ --platform linux/amd64 --tag ghcr.io/golden-containers/debian:bullseye-backports --label ${1:-DEBUG=TRUE}
 
 # Push
 
