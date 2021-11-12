@@ -15,15 +15,14 @@ git sparse-checkout set bullseye
 # Transform
 
 sed -i -e "1 s/FROM.*/FROM ghcr.io\/golden-containers\/debian\:bullseye/; t" -e "1,// s//ghcr.io\/golden-containers\/debian\:bullseye/" bullseye/backports/Dockerfile
-echo "LABEL ${1:-DEBUG=TRUE}" >> bullseye/backports/Dockerfile
 
 # Build
 
-docker build bullseye --tag ghcr.io/golden-containers/debian:bullseye
+docker build bullseye/ --tag ghcr.io/golden-containers/debian:bullseye --label ${1:-DEBUG=TRUE}
 
-docker build bullseye/slim --tag ghcr.io/golden-containers/debian:bullseye-slim
+docker build bullseye/slim/ --tag ghcr.io/golden-containers/debian:bullseye-slim --label ${1:-DEBUG=TRUE}
 
-docker build bullseye/backports --tag ghcr.io/golden-containers/debian:bullseye-backports
+docker build bullseye/backports/ --tag ghcr.io/golden-containers/debian:bullseye-backports --label ${1:-DEBUG=TRUE}
 
 # Push
 
