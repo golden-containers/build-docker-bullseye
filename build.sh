@@ -5,6 +5,8 @@ rm -rf working
 mkdir working
 cd working
 
+GCI_URL="ghcr.io/golden-containers"
+
 # Checkout upstream
 
 git clone --depth 1 --branch dist-amd64 --filter=blob:none --sparse https://github.com/debuerreotype/docker-debian-artifacts
@@ -14,12 +16,14 @@ git sparse-checkout set bullseye
 
 # Transform
 
+GCI_REGEX_URL=$(echo ${GCI_URL} | sed 's/\//\\\//g')
+
 # This sed syntax is GNU sed specific
 [ -z $(command -v gsed) ] && GNU_SED=sed || GNU_SED=gsed
 
 ${GNU_SED} -i \
-    -e "1 s/FROM.*/FROM ghcr.io\/golden-containers\/debian\:bullseye/; t" \
-    -e "1,// s//ghcr.io\/golden-containers\/debian\:bullseye/" \
+    -e "1 s/FROM.*/FROM ${GCI_REGEX_URL}\/debian\:bullseye/; t" \
+    -e "1,// s//FROM ${GCI_REGEX_URL}\/debian\:bullseye/" \
     bullseye/backports/Dockerfile
 
 # Build
@@ -27,15 +31,17 @@ ${GNU_SED} -i \
 [ -z "${1:-}" ] && BUILD_LABEL_ARG="" || BUILD_LABEL_ARG=" --label \"${1}\" "
 
 BUILD_PLATFORM=" --platform linux/amd64 "
-GCI_URL="ghcr.io/golden-containers"
 BUILD_ARGS=" ${BUILD_LABEL_ARG} ${BUILD_PLATFORM} "
 
-docker build bullseye/ --tag ${GCI_URL}/debian:bullseye ${BUILD_ARGS}
-
-docker build bullseye/slim/ --tag ${GCI_URL}/debian:bullseye-slim ${BUILD_ARGS}
-
-docker build bullseye/backports/ --tag ${GCI_URL}/debian:bullseye-backports ${BUILD_ARGS}
-
+docker build bullseye/ ${BUILD_ARGS} \
+    --tag ${GCI_URL}/debian:bullseye 
+    
+docker build bullseye/slim/ ${BUILD_ARGS} \
+    --tag ${GCI_URL}/debian:bullseye-slim 
+    
+docker build bullseye/backports/ ${BUILD_ARGS} \
+    --tag ${GCI_URL}/debian:bullseye-backports 
+    
 # Push
 
-docker push ghcr.io/golden-containers/debian -a
+docker push ${GCI_URL}/debian -a
