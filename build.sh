@@ -17,15 +17,24 @@ git sparse-checkout set bullseye
 # This sed syntax is GNU sed specific
 [ -z $(command -v gsed) ] && GNU_SED=sed || GNU_SED=gsed
 
-${GNU_SED} -i -e "1 s/FROM.*/FROM ghcr.io\/golden-containers\/debian\:bullseye/; t" -e "1,// s//ghcr.io\/golden-containers\/debian\:bullseye/" bullseye/backports/Dockerfile
+${GNU_SED} -i \
+    -e "1 s/FROM.*/FROM ghcr.io\/golden-containers\/debian\:bullseye/; t" \
+    -e "1,// s//ghcr.io\/golden-containers\/debian\:bullseye/" \
+    bullseye/backports/Dockerfile
 
 # Build
 
-docker build bullseye/ --platform linux/amd64 --tag ghcr.io/golden-containers/debian:bullseye --label ${1:-DEBUG=TRUE}
+[ -z "${1:-}" ] && BUILD_LABEL_ARG="" || BUILD_LABEL_ARG=" --label \"${1}\" "
 
-docker build bullseye/slim/ --platform linux/amd64 --tag ghcr.io/golden-containers/debian:bullseye-slim --label ${1:-DEBUG=TRUE}
+BUILD_PLATFORM=" --platform linux/amd64 "
+GCI_URL="ghcr.io/golden-containers"
+BUILD_ARGS=" ${BUILD_LABEL_ARG} ${BUILD_PLATFORM} "
 
-docker build bullseye/backports/ --platform linux/amd64 --tag ghcr.io/golden-containers/debian:bullseye-backports --label ${1:-DEBUG=TRUE}
+docker build bullseye/ --tag ${GCI_URL}/debian:bullseye ${BUILD_ARGS}
+
+docker build bullseye/slim/ --tag ${GCI_URL}/debian:bullseye-slim ${BUILD_ARGS}
+
+docker build bullseye/backports/ --tag ${GCI_URL}/debian:bullseye-backports ${BUILD_ARGS}
 
 # Push
 
